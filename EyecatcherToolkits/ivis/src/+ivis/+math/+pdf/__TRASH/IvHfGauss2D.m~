@@ -1,0 +1,145 @@
+classdef IvHfGauss2D < ivis.math.pdf.IvHitFunc    
+	% Bivariate Gaussian probabilty distribution function for the
+	% likelihood-based classifier(s).
+    %
+    % IvHfGauss2D Methods:
+    %   * IvHfGauss2D  	- Constructor.
+    %   * getPDF        - Get the probability of each value, x, given the probability density function.
+    %   * getRand       - Generate a column vector of n random values, given the probability density function.
+    %   * plot         	- Initialise the GUI element.
+    %   * updatePlot  	- update the GUI element.
+    %
+    % See Also:
+    %   none
+    %
+    % Example:
+    %   clearAbsAll; x = ivis.math.pdf.IvHfGauss2D([0 0], [100 100]), x.getPDF([-9991 -9991]), x.getPDF([-1 -1])
+    %
+    % Author:
+    %   Pete R Jones <petejonze@gmail.com>
+    %
+    % Verinfo:
+    %   1.0 PJ 02/2013 : first_build\n
+    %
+    %
+    % Copyright 2014 : P R Jones
+    % *********************************************************************
+    % 
+% TODO: truncate
+    
+    %% ====================================================================
+    %  -----PROPERTIES-----
+    %$ ====================================================================      
+    
+    properties (GetAccess = public, SetAccess = private)
+        % user specified parameters
+        muOffset_px = [0 0];   % additive bias in the distribution mean [x, y]
+        sigma_px               % distribution standard deviations [x, y]
+    end
+
+    
+    %% ====================================================================
+    %  -----PUBLIC METHODS-----
+    %$ ====================================================================
+          
+    methods (Access = public)
+        
+        %% == CONSTRUCTOR =================================================
+        
+        function obj = IvHfGauss2D(muOffset_px, sigma_px, minmaxBounds_px)
+            % IvHfGauss2D Constructor.
+            %
+            % @param    muOffset_px         additive offset of gaussian (pixels) -- NB: this should usually be [0 0] to centre the distribution on the target
+            % @param    sigma_px            standard deviation of gaussian (pixels)
+            % @param    minmaxBounds_px     4 element vector specifying min/max bounds [xmix_px ymin_px xmax_px ymax_px]
+            % @return   obj                 IvHfGauss2D object
+            %
+            % @date     26/06/14
+            % @author   PRJ
+            %
+
+            % validate params
+            if length(muOffset_px) ~= 2
+                error('IvHfGauss2D:invalidInitParam','mu must contain 2 elements');
+            end
+            if length(muOffset_px) ~= length(sigma_px)
+                error('IvHfGauss2D:invalidInitParam','mu dimensions must match sigma dimensions');
+            end
+            
+         	% explicitly invoke superclass constructor. This will cause any
+            % min/max values not stated explicitly to default to their
+            % preset values (e.g., screen width +/- a margin of X%)
+            if nargin < 3, minmaxBounds_px = []; end
+            obj@ivis.math.pdf.IvHitFunc(minmaxBounds_px);
+
+            % create Probability Distribution objects (independent for x
+            % and y domain)
+            obj.probdist_x = truncate(makedist('Normal', muOffset_px(1), sigma_px(1)), obj.xmin_px, obj.xmax_px);
+            obj.probdist_y = truncate(makedist('Normal', muOffset_px(2), sigma_px(2)), obj.ymin_px, obj.ymax_px);
+            
+            
+            % store params
+            obj.muOffset_px = muOffset_px;
+            obj.sigma_px = sigma_px;
+            
+        end
+        
+        %% == METHODS =====================================================
+        
+%         function [P,xy] = getPDF(obj, xy, mu) % interface implementation
+% %             if nargin < 2 || isempty(xy) % parse inputs
+% %                 xy = obj.pdf_xy;
+% %             end
+%             if size(mu,2) ~= 2
+%                 error('IvHfGauss2D:invalidGetPDFParam','mu must contain 2 columns');
+%             end
+% 
+%             % calc bivartiate pdf
+%             P = mvnpdf(xy, bsxfun(@plus, mu, obj.muOffset_px), obj.sigma_px.^2);
+%         end
+% 
+%         function xy = getRand(obj, n, mu) % interface implementation          
+%             mu = mu + obj.muOffset_px;
+%             xy = mvnrnd(mu, obj.sigma_px.^2, n);
+%         end
+
+        function h = plot(obj, mu, color, ~) % interface implementation
+            if length(mu) ~= 2
+                error('IvHfGauss2D:invalidGetPDFParam','mu must contain 2 elements');
+            end
+
+            % plot
+            mu = mu + obj.muOffset_px;
+            sd = [0.55 1.33 2.2]' * obj.sigma_px;
+            h = ellipse(sd(:,1), sd(:,2), 0, mu(1), mu(2), color, 50, true);
+            
+            % ALT: higher quality (but slower) (?)
+            % [P,xy] = obj.getPDF([],mu);
+            % if isempty(minP)
+            %     minP = min(P);
+            % end
+            % V = linspace(minP,max(P),7);
+            % [~,h] = contourf(reshape(xy(:,1),IvHitFunc.N,IvHitFunc.N),reshape(xy(:,2),IvHitFunc.N,IvHitFunc.N),reshape(P,IvHitFunc.N,IvHitFunc.N), V);
+            % ch = get(h,'child'); alpha(ch,0.2);
+            % set(h, 'linecolor',color);
+            
+            % store
+            obj.hPlot = h;
+        end
+        
+        function [] = updatePlot(obj, mu) % interface implementation
+                mu = mu + obj.muOffset_px;
+                sd = [0.55 1.33 2.2]' * obj.sigma_px;
+                [~,x,y] = ellipse(sd(:,1), sd(:,2), 0, mu(1), mu(2), 'r', 50, false);
+                for i=1:length(obj.hPlot)
+                    set(obj.hPlot(i), 'XData',x(:,i), 'YData',y(:,i));
+                end
+                
+                % ALT: higher quality (but slower) (?)
+                % [P,xy] = obj.getPDF([],mu);
+                % set(obj.hPlot, 'ZData',reshape(P,IvHitFunc.N,IvHitFunc.N));
+                % ch = get(obj.hPlot,'child'); alpha(ch,0.2)
+        end
+    end
+    
+end

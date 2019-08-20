@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ROOT>
+	<ptrVersion>0.6</ptrVersion>
+	<script>dummy_experiment.m</script>
+	<params>
+		<x>hello</x>
+		<y>my</y>
+		<z/>
+	</params>
+	<randSeed>boo</randSeed>
+
+</ROOT>

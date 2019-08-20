@@ -1,0 +1,16 @@
+
+
+
+
+
+to add to C:\Program Files\MATLAB\R2018b\toolbox\local\classpath.txt (changing the username as required):
+
+C:\Users\EyecatcherUser2\Dropbox\EyecatcherHomeToolkits\ivis\src\ivis_util\MatlabGarbageCollector.jar
+C:\Users\EyecatcherUser2\Dropbox\EyecatcherHomeToolkits\PsychTestRig\Utilities\memory\MatlabGarbageCollector.jar
+C:\Users\EyecatcherUser2\Dropbox\EyecatcherHomeToolkits\Psychtoolbox\PsychJava
+
+
+to check working:
+run('C:\Users\EyecatcherUser2\Dropbox\EyecatcherHomeToolkits\ivis\demos\ivisDemo002_keyboardHandling.m')
+
+

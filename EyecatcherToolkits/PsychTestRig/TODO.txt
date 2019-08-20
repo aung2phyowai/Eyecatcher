@@ -1,0 +1,27 @@
+allow for local copies of PTR to be stored inside experiment subfolders
+
+add paths on setup (e.g. add the code folder for new experiments when they are created???)
+increase handle limit if necessary??
+
+
+
+"assert"
+
+
+add a cleanUpAsvFiles.m script [add a cleanUp._.DS_StoreFiles also. (possibly all hidden files)]
+
+get struct2String working as per dispStruct, then update the error throwing in runExperiment.m accordingly
+
+
+make the dummy experiment an actual dummy experiment!
+
+database
+
+fig
+
+make a genFuncTemplate.m script (e.g. pre-populates header in the form of pC_main_v1.m or getPureTone.m)
+
+make some kind of 'dummy' observer function?
+
+
+MAYBE: some kind of 'is running' flag, which prevents code from executing if running an experiment (e.g. like the dummy testing code at the start of the stimulus generation scripts, which can be useful when developing)

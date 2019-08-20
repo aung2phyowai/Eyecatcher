@@ -1,0 +1,24 @@
+v0.0.6 19/10/2017
+
+
+Problems noted with v0.0.5:
+> patients getting stuck on calibration screen (faces not disappearing)
+> figure outputs have to be saved manually
+> no confirmation of which eye is being tested
+
+Changes made in v0.0.6:
+* Sped up load time (set skipWriteCheck to false)
+* Further relaxed the calibClassifier to reduce number of times get 'stuck' on the face
+* make 'both' option trigger 2 tests (left eye, right eye, in random order)
+* Shifted to PsychTestRig v0.8 (allows for fewer config files)
+* save output image automatically, with date and time and patient number
+* Add title to figure, confirming date, time, and patient number
+* set IN_FINAL_MODE = true
+* changed desired viewing distance to 53 cm (previously 60 cm)
+* removed some redundant lines of code
+* corrected some comments and numbering
+* add an indicator to confirm the eye on distance calibration screen (and desired distance)
+* CALIBRATION: Now trigger recalibration only if missing a very large number of points (> 90% after 10+ trials; previously > 65% after 5+ trials)
+* CALIBRATION: Can manually trigger recalibration by pressing "t"
+* CALIBRATION: Add start option to cancel calibration altogether
+* CALIBRATION: Added key ("SPACE") to 'force' a particular calibration point to register

@@ -1,0 +1,13 @@
+cd C:\Users\EyecatcherUser2\Dropbox\EyecatcherHome2\Experiments\EyecatcherHome\run\calib
+
+
+obj = CalibrateScreen()
+fnPrelim = obj.step1_singlePoint()
+fnCalib = obj.step2_allPointsWithBackground(fnPrelim)
+
+load(fnCalib)
+tmp_plotme_sanitycheck_v1
+
+fnCalibBgrd = obj.step3_fitBgrdMatrix(fnCalib)
+
+obj.step4_validateFittedCalib(fnCalib, fnCalibBgrd)

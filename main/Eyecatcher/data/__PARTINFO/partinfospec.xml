@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<spec>
+   <dob>
+      <question>dob?</question>
+      <datatype>date</datatype>
+   </dob>
+   <patientcode>
+      <question>Patient Code?</question>
+      <datatype>VarChar(255)</datatype>
+   </patientcode>
+</spec>
