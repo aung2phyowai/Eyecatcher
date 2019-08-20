@@ -1,0 +1,15 @@
+#############
+## Eyecatcher
+#############
+
+admin/
+.svn/
+__TRASH/
+_private/
+bin/
+logs/
+
+*.dropbox
+*.ini
+*.asv
+*.m~
